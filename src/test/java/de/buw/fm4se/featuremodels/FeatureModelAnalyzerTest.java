@@ -16,10 +16,10 @@ class FeatureModelAnalyzerTest {
     assertTrue(FeatureModelAnalyzer.checkConsistent(ExampleFmCreator.getSimpleFm()));
   }
   
-  // @Test
-  // void testCheckConsistentBadFM() {
-  //   assertFalse(FeatureModelAnalyzer.checkConsistent(ExampleFmCreator.getBadFm()));
-  // }
+  @Test
+  void testCheckConsistentBadFM() {
+    assertFalse(FeatureModelAnalyzer.checkConsistent(ExampleFmCreator.getBadFm()));
+  }
   
   // @Test
   // void testCheckDeadFeaturesBadFM() {
@@ -38,13 +38,12 @@ class FeatureModelAnalyzerTest {
   //   assertFalse(deadFeatures.contains(fm.getRoot().getName()));
   // }
   
-  // @Test
-  // void testCheckMandatoryFeaturesCarFM() {
-  //   FeatureModel fm = ExampleFmCreator.getSimpleFm();
-  //   List<String> mandatoryFeatures = FeatureModelAnalyzer.mandatoryFeatureNames(fm);
+  @Test
+  void testCheckMandatoryFeaturesCarFM() {
+    FeatureModel fm = ExampleFmCreator.getSimpleFm();
+    List<String> mandatoryFeatures = FeatureModelAnalyzer.mandatoryFeatureNames(fm);
     
-  //   System.out.println(Arrays.toString(mandatoryFeatures.toArray()));
-  //   System.out.println("END");
-  // }
+    System.out.println(Arrays.toString(mandatoryFeatures.toArray()));
+  }
 
 }

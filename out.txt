@@ -1,0 +1,18 @@
+% SATISFIABLE formula (satisfying assignment follows)
+car = 1
+motor = 1
+important1 = 1
+comfort = 0
+gasoline = 1
+electric = 0
+1stChildImportant1 = 1
+2ndChildImportant1 = 0
+heating = 1
+entertainment = 0
+radio = 0
+tv = 0
+Rock = 0
+Jazz = 1
+Pop = 0
+RnB = 0
+Hip-Hop = 0

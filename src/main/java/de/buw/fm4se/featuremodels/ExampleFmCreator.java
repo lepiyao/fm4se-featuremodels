@@ -24,6 +24,10 @@ public class ExampleFmCreator {
     m.setRoot(car);
 
     Feature motor = car.addChild("motor", true);
+    
+    Feature important1 = car.addChild("important1", true);
+    important1.addChild("1stChildImportant1", true);
+    important1.addChild("2ndChildImportant1", false);
 
     motor.setChildGroupKind(GroupKind.XOR);
     motor.addChild("gasoline", false);

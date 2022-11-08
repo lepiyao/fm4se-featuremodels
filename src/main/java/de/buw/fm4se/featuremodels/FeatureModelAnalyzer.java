@@ -1,7 +1,6 @@
 package de.buw.fm4se.featuremodels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.buw.fm4se.featuremodels.exec.LimbooleExecutor;
@@ -42,20 +41,27 @@ public class FeatureModelAnalyzer {
   public static List<String> mandatoryFeatureNames(FeatureModel fm) {
     List<String> mandatoryFeatures = new ArrayList<>();
 
-    // TODO check for mandatory features
-    // get all the feature that is mandatory in the FeatureModel
-    checkMandatoryFM(fm.getRoot(), mandatoryFeatures);
+    mandatoryFeatures.add(fm.getRoot().getName());
+    checkMandatoryFM(fm.getRoot(), fm.getRoot().getChildren(), mandatoryFeatures, fm.getRoot().getName());
+
     return mandatoryFeatures;
   }
 
-  public static void checkMandatoryFM(Feature feature, List<String> mandatoryFeatures){
-    if(feature.isMandatory() == true)
-    {
-      mandatoryFeatures.add(feature.getName());
+  public static void checkMandatoryFM(Feature feature, List<Feature> listChild, List<String> mandatoryFeatures, String rootName){
+    for (Feature child : feature.getChildren()){
+      if(feature.getName() == rootName){
+        if(child.isMandatory()){
+          mandatoryFeatures.add(child.getName());
+        }
+      }else{
+        if(child.isMandatory() && feature.isMandatory()){
+          mandatoryFeatures.add(child.getName());
+        }
+      }
     }
 
     for (Feature f : feature.getChildren()){
-      checkMandatoryFM(f, mandatoryFeatures);
+      checkMandatoryFM(f, f.getChildren(), mandatoryFeatures, rootName);
     }
   }
 
