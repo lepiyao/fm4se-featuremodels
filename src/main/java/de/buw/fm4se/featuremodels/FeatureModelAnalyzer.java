@@ -1,9 +1,11 @@
 package de.buw.fm4se.featuremodels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.buw.fm4se.featuremodels.exec.LimbooleExecutor;
+import de.buw.fm4se.featuremodels.fm.Feature;
 import de.buw.fm4se.featuremodels.fm.FeatureModel;
 
 /**
@@ -41,8 +43,20 @@ public class FeatureModelAnalyzer {
     List<String> mandatoryFeatures = new ArrayList<>();
 
     // TODO check for mandatory features
-
+    // get all the feature that is mandatory in the FeatureModel
+    checkMandatoryFM(fm.getRoot(), mandatoryFeatures);
     return mandatoryFeatures;
+  }
+
+  public static void checkMandatoryFM(Feature feature, List<String> mandatoryFeatures){
+    if(feature.isMandatory() == true)
+    {
+      mandatoryFeatures.add(feature.getName());
+    }
+
+    for (Feature f : feature.getChildren()){
+      checkMandatoryFM(f, mandatoryFeatures);
+    }
   }
 
 }

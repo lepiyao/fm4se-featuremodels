@@ -32,7 +32,18 @@ public class ExampleFmCreator {
     Feature comfort = car.addChild("comfort", false);
     comfort.setChildGroupKind(GroupKind.OR);
     Feature heating = comfort.addChild("heating", false);
-    comfort.addChild("entertainment", false);
+    Feature entertainment = comfort.addChild("entertainment", false);
+
+    Feature music = entertainment.addChild("radio", true);
+    entertainment.addChild("tv", false);
+    
+    music.setChildGroupKind(GroupKind.OR);
+    music.addChild("Rock", false);
+    music.addChild("Jazz", false);
+    music.addChild("Pop", false);
+    music.addChild("RnB", false);
+    music.addChild("Hip-Hop", false);
+
 
     m.addConstraint(new CrossTreeConstraint(electric, CrossTreeConstraint.Kind.REQUIRES, heating));
 
