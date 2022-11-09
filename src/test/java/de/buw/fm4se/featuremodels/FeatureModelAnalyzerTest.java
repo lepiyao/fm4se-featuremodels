@@ -21,22 +21,22 @@ class FeatureModelAnalyzerTest {
     assertFalse(FeatureModelAnalyzer.checkConsistent(ExampleFmCreator.getBadFm()));
   }
   
-  // @Test
-  // void testCheckDeadFeaturesBadFM() {
-  //   FeatureModel fm = ExampleFmCreator.getBadFm();
-  //   List<String> deadFeatures = FeatureModelAnalyzer.deadFeatureNames(fm);
+  @Test
+  void testCheckDeadFeaturesBadFM() throws Exception {
+    FeatureModel fm = ExampleFmCreator.getBadFm();
+    List<String> deadFeatures = FeatureModelAnalyzer.deadFeatureNames(fm);
     
-  //   assertTrue(deadFeatures.contains(fm.getRoot().getName()));
-  //   assertTrue(deadFeatures.contains(fm.getRoot().getChildren().get(0).getName()));
-  // }
+    assertTrue(deadFeatures.contains(fm.getRoot().getName()));
+    assertTrue(deadFeatures.contains(fm.getRoot().getChildren().get(0).getName()));
+  }
   
-  // @Test
-  // void testCheckDeadFeaturesCarFM() {
-  //   FeatureModel fm = ExampleFmCreator.getSimpleFm();
-  //   List<String> deadFeatures = FeatureModelAnalyzer.deadFeatureNames(fm);
+  @Test
+  void testCheckDeadFeaturesCarFM() throws Exception {
+    FeatureModel fm = ExampleFmCreator.getSimpleFm();
+    List<String> deadFeatures = FeatureModelAnalyzer.deadFeatureNames(fm);
     
-  //   assertFalse(deadFeatures.contains(fm.getRoot().getName()));
-  // }
+    assertFalse(deadFeatures.contains(fm.getRoot().getName()));
+  }
   
   @Test
   void testCheckMandatoryFeaturesCarFM() {

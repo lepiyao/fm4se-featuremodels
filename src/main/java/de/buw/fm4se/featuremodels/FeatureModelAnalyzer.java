@@ -1,9 +1,11 @@
 package de.buw.fm4se.featuremodels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.buw.fm4se.featuremodels.exec.LimbooleExecutor;
+import de.buw.fm4se.featuremodels.fm.CrossTreeConstraint;
 import de.buw.fm4se.featuremodels.fm.Feature;
 import de.buw.fm4se.featuremodels.fm.FeatureModel;
 
@@ -30,12 +32,50 @@ public class FeatureModelAnalyzer {
     return true;
   }
 
-  public static List<String> deadFeatureNames(FeatureModel fm) {
+  public static List<String> deadFeatureNames(FeatureModel fm) throws Exception {
     List<String> deadFeatures = new ArrayList<>();
 
     // TODO check for dead features
-
+    checkDeadFeature(fm.getRoot(), deadFeatures, fm.getConstraints());
+    
+    // If the Dead List contain the root -> add all of the children
+    if(deadFeatures.contains(fm.getRoot().getName())){
+      checkListDead(fm.getRoot(), deadFeatures);
+    }
+    
+    System.out.println(Arrays.toString(deadFeatures.toArray()));
     return deadFeatures;
+  }
+
+  public static void checkListDead(Feature feature, List<String> deadFeatures){
+    if(deadFeatures.contains(feature.getName())){
+      for(Feature f : feature.getChildren()){
+        System.out.println("this is " + f.getName());
+        deadFeatures.add(f.getName());
+
+        checkListDead(f,deadFeatures);
+      }
+    }
+  }
+
+  private static void checkDeadFeature(Feature feature, List<String> deadFeatures, List<CrossTreeConstraint> listConstraints) throws Exception {
+    FeatureModel temp = new FeatureModel();
+    // System.out.println("this is " + feature.getName());
+    temp.setRoot(feature);
+    
+    for(CrossTreeConstraint c : listConstraints) {
+      temp.addConstraint(c);
+      // System.out.println("Constraint " + c.getLeft().getName() + " " + c.getKind() + " " + c.getRight().getName());
+    }
+
+    if(checkConsistent(temp) == false){
+      deadFeatures.add(feature.getName());
+      // System.out.println("FALSE this is " + feature.getName());
+    }
+    
+    for (Feature child : feature.getChildren()) {
+      checkDeadFeature(child, deadFeatures, listConstraints);
+    }
   }
 
   public static List<String> mandatoryFeatureNames(FeatureModel fm) {
