@@ -68,7 +68,7 @@ public class FeatureModelAnalyzer {
       // System.out.println("Constraint " + c.getLeft().getName() + " " + c.getKind() + " " + c.getRight().getName());
     }
 
-    if(checkConsistent(temp) == false){
+    if(!checkConsistent(temp)){
       deadFeatures.add(feature.getName());
       // System.out.println("FALSE this is " + feature.getName());
     }

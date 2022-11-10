@@ -31,6 +31,7 @@ public class ExampleFmCreator {
 
     motor.setChildGroupKind(GroupKind.XOR);
     motor.addChild("gasoline", false);
+    motor.addChild("gear", false);
     Feature electric = motor.addChild("electric", false);
 
     Feature comfort = car.addChild("comfort", false);

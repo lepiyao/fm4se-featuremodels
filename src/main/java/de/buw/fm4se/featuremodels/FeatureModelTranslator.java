@@ -1,7 +1,10 @@
 package de.buw.fm4se.featuremodels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import de.buw.fm4se.featuremodels.fm.Feature;
 import de.buw.fm4se.featuremodels.fm.FeatureModel;
@@ -61,19 +64,33 @@ public class FeatureModelTranslator {
     // Check if its XOR or NONE
     if (feature.getChildGroupKind().equals(GroupKind.XOR)){
       // XOR mode===================================================
-      // Since XOR is rarely used for more than 2
-      // But it is better for me to throw an exception and break the process if its more than 2
-      // because it might be a bit confusing and a lot to count/write all of them
       String body = "";
       List<String> list2ndChild = new ArrayList<>();
-      for(int j =0; j<feature.getChildren().size();j++){
-        list2ndChild.add(feature.getChildren().get(j).getName());
-      }
+      List<String> listTemp = new ArrayList<>();
+      if(feature.getChildren().size() == 2){
+        for(int j =0; j<feature.getChildren().size();j++){
+          list2ndChild.add(feature.getChildren().get(j).getName());
+        }
+  
+        body =  list2ndChild.get(0) + " & !" + list2ndChild.get(1) + " | !" + list2ndChild.get(0) + " & " + list2ndChild.get(1) ;
+        
+        String stateXOR = head + " -> " + body;
+        listStatement.add(stateXOR);
+      }else if(feature.getChildren().size() > 2){
+        // ============================================================================
+        checkXOR(feature, listTemp);
 
-      body =  list2ndChild.get(0) + " & !" + list2ndChild.get(1) + " | !" + list2ndChild.get(0) + " & " + list2ndChild.get(1) ;
+        for (String s : listTemp){
+          if(s.equals(listTemp.get(listTemp.size()-1))){
+            body += s + " ";
+          }else{
+            body += s + " | " ;
+          }
+        }
+        String stateXOR = head + " -> " + body;
+        listStatement.add(stateXOR);
+      }
       
-      String stateXOR = head + " -> " + body;
-      listStatement.add(stateXOR);
 
     } else if (feature.getChildGroupKind().equals(GroupKind.OR)){
       // OR mode===================================================
@@ -99,6 +116,27 @@ public class FeatureModelTranslator {
       checkGroupKind(f,listStatement);
     }
     
+  }
+
+  public static void checkXOR(Feature feature, List<String> listTemp){
+    String temp ="";
+
+    for(int i=0; i <feature.getChildren().size(); i++){
+      for(int j=0; j <feature.getChildren().size(); j++){
+
+        if(j != feature.getChildren().size()-1 && feature.getChildren().get(j).getName().equals(feature.getChildren().get(i).getName())){
+          temp +=  feature.getChildren().get(j).getName() + " & ";
+        }else if(j != feature.getChildren().size()-1 && !feature.getChildren().get(j).getName().equals(feature.getChildren().get(i).getName())){
+          temp += "!"+ feature.getChildren().get(j).getName() + " & ";
+        }else if(j == feature.getChildren().size()-1 && !feature.getChildren().get(j).getName().equals(feature.getChildren().get(i).getName())){
+          temp += "!" + feature.getChildren().get(j).getName();
+        }else {
+          temp += feature.getChildren().get(j).getName();
+        }
+      }
+      listTemp.add(temp);
+      temp="";
+    }
   }
 
   public static void checkIsMandatory(Feature feature, Feature child, List<String> listStatement){
